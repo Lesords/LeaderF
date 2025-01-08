@@ -2405,6 +2405,7 @@ class Manager(object):
             chdir = os.chdir
 
         cwd = lfGetCwd()
+        cwd = lfEval("getcwd()")
         if len(self._selections) > 0:
             files = []
             for i in sorted(self._selections.keys()):
