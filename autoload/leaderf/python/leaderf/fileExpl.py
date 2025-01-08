@@ -49,6 +49,15 @@ def showDevIcons(func):
 def format_line(line):
     return webDevIconsGetFileTypeSymbol(line) + line
 
+def windows_to_linux_path(windows_path):
+    # 替换反斜杠为正斜杠
+    linux_path = windows_path.replace("\\", "/")
+
+    # 如果路径是以 'C:\' 开头，将其转换为 '/mnt/c/'
+    if linux_path[1:3] == ":/":
+        linux_path = "/" + linux_path[0].lower() + linux_path[2:]
+
+    return linux_path
 
 #*****************************************************
 # FileExplorer
@@ -858,6 +867,8 @@ class FileExplManager(Manager):
                 else:
                     file = os.path.join(self._getInstance().getCwd(), lfDecode(file))
                 file = os.path.normpath(lfEncode(file))
+
+            file = windows_to_linux_path(file)
 
             if kwargs.get("mode", '') == 't':
                 if (lfEval("get(g:, 'Lf_DiscardEmptyBuffer', 1)") == '1' and vim.current.buffer.name == ''
