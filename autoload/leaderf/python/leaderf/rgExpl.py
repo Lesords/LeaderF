@@ -32,6 +32,16 @@ def workingDirectory(func):
 
     return deco
 
+def windows_to_linux_path(windows_path):
+    # 替换反斜杠为正斜杠
+    linux_path = windows_path.replace("\\", "/")
+
+    # 如果路径是以 'C:\' 开头，将其转换为 '/mnt/c/'
+    if linux_path[1:3] == ":/":
+        linux_path = "/" + linux_path[0].lower() + linux_path[2:]
+
+    return linux_path
+
 #*****************************************************
 # RgExplorer
 #*****************************************************
@@ -656,6 +666,8 @@ class RgExplManager(Manager):
         file, line_num = self._getFileInfo(args)
         if file is None:
             return
+
+        file = windows_to_linux_path(file)
 
         if isinstance(file, int):
             buf_number = file
@@ -1535,7 +1547,8 @@ class RgExplManager(Manager):
 
         self._getInstance().buffer.options["buftype"] = "nofile"
         self._getInstance().buffer.options["modifiable"] = False
-        self._getInstance().buffer.options["undolevels"] = -1
+        if self._getInstance().buffer.options["undolevels"] != -1:
+            self._getInstance().buffer.options["undolevels"] = -1
 
     def quit(self):
         self.confirm()
