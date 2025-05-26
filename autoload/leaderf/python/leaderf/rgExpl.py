@@ -667,7 +667,8 @@ class RgExplManager(Manager):
         if file is None:
             return
 
-        file = windows_to_linux_path(file)
+        if 'exe' not in vim.eval('v:progname'):
+            file = windows_to_linux_path(file)
 
         if isinstance(file, int):
             buf_number = file

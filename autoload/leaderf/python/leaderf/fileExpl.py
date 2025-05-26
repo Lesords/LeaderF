@@ -868,7 +868,8 @@ class FileExplManager(Manager):
                     file = os.path.join(self._getInstance().getCwd(), lfDecode(file))
                 file = os.path.normpath(lfEncode(file))
 
-            file = windows_to_linux_path(file)
+            if 'exe' not in vim.eval('v:progname'):
+                file = windows_to_linux_path(file)
 
             if kwargs.get("mode", '') == 't':
                 if (lfEval("get(g:, 'Lf_DiscardEmptyBuffer', 1)") == '1' and vim.current.buffer.name == ''
