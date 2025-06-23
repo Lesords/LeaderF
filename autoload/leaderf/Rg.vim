@@ -180,7 +180,7 @@ endfunction
 
 
 function! leaderf#Rg#NormalModeFilter(winid, key) abort
-    let key = leaderf#RemapKey(g:Lf_PyEval("id(rgExplManager)"), get(g:Lf_KeyMap, a:key, a:key))
+    let key = leaderf#RemapKey(g:Lf_PyEval("str(id(rgExplManager))"), get(g:Lf_KeyMap, a:key, a:key))
 
     if key ==# "i" || key ==? "<Tab>"
         if g:Lf_py == "py "
@@ -199,7 +199,7 @@ function! leaderf#Rg#NormalModeFilter(winid, key) abort
     elseif key ==# "L"
         exec g:Lf_py "rgExplManager.outputToLoclist()"
     else
-        return leaderf#NormalModeFilter(g:Lf_PyEval("id(rgExplManager)"), a:winid, a:key)
+        return leaderf#NormalModeFilter(g:Lf_PyEval("str(id(rgExplManager))"), a:winid, a:key)
     endif
 
     return 1
